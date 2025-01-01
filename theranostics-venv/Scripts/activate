@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Theranostics\theranostics-venv"
+VIRTUAL_ENV="C:\Users\acrpr\OneDrive\Documents\cs23localab\HI191\hi191-grp4-theranostics\theranostics-venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
