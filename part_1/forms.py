@@ -35,6 +35,23 @@ class EditPhysicalExam(ModelForm):
             'bp' : 'Blood Pressure(mmHg)',
             'hr' : 'Heart Rate(bpm)'
         }
+        widgets = {
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        height = cleaned_data.get('height')
+        weight = cleaned_data.get('weight')
+        
+        if height and weight:
+            # Convert height from cm to meters
+            height_in_meters = height / 100
+            # Calculate BMI and round to nearest integer
+            bmi = round(weight / (height_in_meters * height_in_meters))
+            cleaned_data['bmi'] = bmi
+            
+        return cleaned_data
 
 class AddPhysicalExam(ModelForm):
     class Meta:
@@ -47,6 +64,23 @@ class AddPhysicalExam(ModelForm):
             'bp' : 'Blood Pressure(mmHg)',
             'hr' : 'Heart Rate(bpm)'
         }
+        widgets = {
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+        }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        height = cleaned_data.get('height')
+        weight = cleaned_data.get('weight')
+        
+        if height and weight:
+            # Convert height from cm to meters
+            height_in_meters = height / 100
+            # Calculate BMI and round to nearest integer
+            bmi = round(weight / (height_in_meters * height_in_meters))
+            cleaned_data['bmi'] = bmi
+            
+        return cleaned_data
 
 class AddScreening(ModelForm):
     class Meta:
