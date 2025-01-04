@@ -18,7 +18,7 @@ class Patient(models.Model):
     address = models.CharField(max_length=300)
     diagnosis_date = models.DateField()
     surgery_date = models.DateField()
-    histopath_result = models.ImageField(upload_to="images/")
+    histopath_result = models.ImageField(upload_to="images/", blank=True, null=True)
     histopath_details = models.TextField(max_length=200, blank=False, null=True)
     gleason_score = models.IntegerField(blank=True, null=True)
     date_of_treatment = models.DateField()

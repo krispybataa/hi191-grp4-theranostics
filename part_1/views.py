@@ -164,6 +164,11 @@ def patientSearch(request):
     patients = Patient.objects.all()
     query = Q()
 
+    # Handle text search
+    search_query = request.GET.get('search_query', '').strip()
+    if search_query:
+        query &= Q(name__icontains=search_query)
+
     # Get all filter parameters
     low_risk = request.GET.get('flexCheckLowRisk')
     intermediate_risk = request.GET.get('flexCheckIntermediateRisk')
@@ -212,7 +217,7 @@ def patientSearch(request):
 
     # Side Effects Filter
     if side_effects == 'on':
-        query &= Q(therapy_patient__side_effects__isnull=False)
+        query &= Q(t_patient__side_effects__isnull=False)
 
     # Screening Imaging Filters
     screening_query = Q()
@@ -272,6 +277,7 @@ def patientSearch(request):
     context = {
         'patients': patients,
         'patient_count': patients.count(),
+        'search_query': search_query,  # Pass back search query
         # Pass filter states back to template
         'low_risk': low_risk == 'on',
         'intermediate_risk': intermediate_risk == 'on',
@@ -314,14 +320,19 @@ def patientDetails(request, slug):
 
 @login_required
 def addPatient(request):
-    form = AddPatient()
     if request.method == "POST":
         form = AddPatient(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            patient = form.save()
+            messages.success(request, f'Patient {patient.name} has been added successfully.')
             return redirect('patientList')
-    context={'form':form}
-    return render(request,"part_1/add-patient.html", context)
+        else:
+            messages.error(request, 'There was an error adding the patient. Please check the form.')
+    else:
+        form = AddPatient()
+    
+    context = {'form': form}
+    return render(request, "part_1/add-patient.html", context)
 
 @login_required
 def editPatient(request, slug):

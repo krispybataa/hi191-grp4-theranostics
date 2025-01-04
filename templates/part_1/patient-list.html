@@ -5,15 +5,18 @@
 {% block content %}
 <div class="w-50">
     <h4>Search for Patients</h4>
-    <form method="POST" action="{% url 'patientSearch' %}">
-        {% csrf_token %}
-        <input class="w-50" type="text" placeholder="Search Patients" name="search">
+    <form method="GET" action="{% url 'patientSearch' %}">
+        <input class="w-50" type="text" placeholder="Search Patients" name="search_query" value="{{ search_query }}">
         <button class="btn btn-secondary" type="submit">Search</button>
     </form>
 </div>
+
 <div class="table-container mt-2 container-fluid py-4" style="background-color: rgb(231, 231, 231); border: none;">
     <h4><b>Filters</b></h4>
     <form method="GET" action=".">
+        {% if search_query %}
+        <input type="hidden" name="search_query" value="{{ search_query }}">
+        {% endif %}
         <div class="row custom-header">
             <div class="col">
                 <h5>Assessment Type</h5>
@@ -175,7 +178,7 @@
 </div>
 
 <div class="mt-4 container-fluid">
-    <h1 class="title">Patients</h1>
+    <h1 class="title">PATIENTS</h1>
     <a class="btn btn-success" style="background-color: #871919; border-color: #871919;" href="{% url 'addPatient' %}">Add Patient</a>
     <div class="container-fluid mt-4 table-container" style="border-bottom: none; width: 80%;">
         {% if patient_count == 1 %}
