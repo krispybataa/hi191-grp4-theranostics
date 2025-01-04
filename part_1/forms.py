@@ -58,7 +58,7 @@ class AddScreening(ModelForm):
         'gapsma_bone_lesion_status', 'gapsma_bone_location', 'gapsma_bone_suv', 'gapsma_bone_size',
         'gapsma_brain_lesion_status', 'gapsma_brain_location', 'gapsma_brain_suv', 'gapsma_brain_size',
         'gapsma_lung_lesion_status', 'gapsma_lung_location', 'gapsma_lung_suv', 'gapsma_lung_size',
-        'gapsma_liver_lesion_status', 'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
+        'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
         'fdgpetct_img',
         'fdgpetct_prostate_lesion_status', 'fdgpetct_prostate_location', 'fdgpetct_prostate_suv', 'fdgpetct_prostate_size',
         'fdgpetct_lymph_node_lesion_status', 'fdgpetct_lymph_node_location', 'fdgpetct_lymph_node_suv', 'fdgpetct_lymph_node_size',
@@ -80,6 +80,13 @@ class AddScreening(ModelForm):
             'sgpt' : 'SGPT(units/L)', 
             'sgot' : 'SGOT(units/L)', 
             'bilirubins' : 'Bilirubins(mg/dL)',
+            'salivary_gland_status': 'Salivary Gland Status',
+            'salivary_gland_image': 'Salivary Gland Image',
+            'bone_metastasis_status': 'Bone Metastasis Status',
+            'bone_scan_image': 'Bone Scan Image',
+            'renal_scintigraphy': 'Renal Scintigraphy',
+            'gapsma_choices': 'GA PSMA Type',
+            'gapsma_img': 'GA PSMA Image'
         }
 
 class EditScreening(ModelForm):
@@ -92,7 +99,7 @@ class EditScreening(ModelForm):
         'gapsma_bone_lesion_status', 'gapsma_bone_location', 'gapsma_bone_suv', 'gapsma_bone_size',
         'gapsma_brain_lesion_status', 'gapsma_brain_location', 'gapsma_brain_suv', 'gapsma_brain_size',
         'gapsma_lung_lesion_status', 'gapsma_lung_location', 'gapsma_lung_suv', 'gapsma_lung_size',
-        'gapsma_liver_lesion_status', 'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
+        'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
         'fdgpetct_img',
         'fdgpetct_prostate_lesion_status', 'fdgpetct_prostate_location', 'fdgpetct_prostate_suv', 'fdgpetct_prostate_size',
         'fdgpetct_lymph_node_lesion_status', 'fdgpetct_lymph_node_location', 'fdgpetct_lymph_node_suv', 'fdgpetct_lymph_node_size',
@@ -114,4 +121,11 @@ class EditScreening(ModelForm):
             'sgpt' : 'SGPT(units/L)', 
             'sgot' : 'SGOT(units/L)', 
             'bilirubins' : 'Bilirubins(mg/dL)',
+            'salivary_gland_status': 'Salivary Gland Status',
+            'salivary_gland_image': 'Salivary Gland Image',
+            'bone_metastasis_status': 'Bone Metastasis Status',
+            'bone_scan_image': 'Bone Scan Image',
+            'renal_scintigraphy': 'Renal Scintigraphy',
+            'gapsma_choices': 'GA PSMA Type',
+            'gapsma_img': 'GA PSMA Image'
         }
