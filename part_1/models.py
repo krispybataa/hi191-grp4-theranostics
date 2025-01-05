@@ -18,7 +18,7 @@ class Patient(models.Model):
     address = models.CharField(max_length=300)
     diagnosis_date = models.DateField()
     surgery_date = models.DateField()
-    histopath_result = models.ImageField(upload_to="images/")
+    histopath_result = models.ImageField(upload_to="images/", blank=True, null=True)
     histopath_details = models.TextField(max_length=200, blank=False, null=True)
     gleason_score = models.IntegerField(blank=True, null=True)
     date_of_treatment = models.DateField()
@@ -35,18 +35,17 @@ class Patient(models.Model):
 
 class PhysicalExam(models.Model):
     id = models.AutoField(primary_key=True)
-    #slug = AutoSlugField(populate_from='id', unique=True, blank=True, null=True)
     date_recorded = models.DateField(default=datetime.now)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, blank=True, null=True)
-    ecog_score = models.IntegerField(blank=True)
-    height = models.IntegerField(blank=True)
-    weight = models.IntegerField(blank=True)
-    bmi = models.IntegerField(blank=True) # Body Mass Index
-    bp = models.CharField(max_length=120, blank=True) # Blood Pressure
-    hr = models.IntegerField(blank=True) # Heart Rate
-    pain_score = models.IntegerField(blank=True)
-    local_symptoms = models.CharField(max_length=300, blank=True)
-    systemic_symptoms = models.CharField(max_length=300, blank=True)
+    ecog_score = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    bmi = models.IntegerField(blank=True, null=True)
+    bp = models.CharField(max_length=120, blank=True, null=True)
+    hr = models.IntegerField(blank=True, null=True)
+    pain_score = models.IntegerField(blank=True, null=True)
+    local_symptoms = models.CharField(max_length=300, blank=True, null=True)
+    systemic_symptoms = models.CharField(max_length=300, blank=True, null=True)
 
 
 class Screening(models.Model):
@@ -75,8 +74,8 @@ class Screening(models.Model):
         ('Left Obstruction', 'Left Obstruction'),
         ('Right Obstruction', 'Right Obstruction')
     )
-    salivary_gland_status = models.CharField(max_length=120, choices = SALIVARY_GLAND_STATUS)
-    salivary_gland_image = models.ImageField(upload_to="images/")
+    salivary_gland_status = models.CharField(max_length=120, choices=SALIVARY_GLAND_STATUS, blank=True, null=True)
+    salivary_gland_image = models.ImageField(upload_to="images/", blank=True, null=True)
 
     BONE_METASTASIS_STATUS = (
         ('Metastasis', 'Metastasis'),

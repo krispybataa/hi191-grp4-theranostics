@@ -3,213 +3,221 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class = "w-50" >
+<div class="w-50">
     <h4>Search for Patients</h4>
-    <form method = POST action="{% url 'patientSearch' %}">
-        {% csrf_token %}
-        
-        <input class = "w-50" type="text" placeholder = "Search Patients" name = "search">
-        <button class = "btn btn-secondary" type = "submit">Search</button>
+    <form method="GET" action="{% url 'patientSearch' %}">
+        <input class="w-50" type="text" placeholder="Search Patients" name="search_query" value="{{ search_query }}">
+        <button class="btn btn-secondary" type="submit">Search</button>
     </form>
 </div>
+
 <div class="table-container mt-2 container-fluid py-4" style="background-color: rgb(231, 231, 231); border: none;">
     <h4><b>Filters</b></h4>
     <form method="GET" action=".">
+        {% if search_query %}
+        <input type="hidden" name="search_query" value="{{ search_query }}">
+        {% endif %}
         <div class="row custom-header">
             <div class="col">
                 <h5>Assessment Type</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLowRisk" name="flexCheckLowRisk">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLowRisk" name="flexCheckLowRisk" {% if low_risk %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLowRisk">
-                    Low Risk
+                        Low Risk
                     </label>
                 </div>
                 <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flexCheckIntermediateRisk" name="flexCheckIntermediateRisk">
-                <label class="form-check-label" for="flexCheckIntermediateRisk">
-                    Intermediate Risk
-                </label>
+                    <input class="form-check-input" type="checkbox" id="flexCheckIntermediateRisk" name="flexCheckIntermediateRisk" {% if intermediate_risk %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckIntermediateRisk">
+                        Intermediate Risk
+                    </label>
                 </div>
                 <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="flexCheckHighRisk" name="flexCheckHighRisk">
-                <label class="form-check-label" for="flexCheckHighRisk">
-                    High Risk
-                </label>
+                    <input class="form-check-input" type="checkbox" id="flexCheckHighRisk" name="flexCheckHighRisk" {% if high_risk %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckHighRisk">
+                        High Risk
+                    </label>
                 </div>
                 <h5>Metastasis</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckMetastasis" name="flexCheckMetastasis">
+                    <input class="form-check-input" type="checkbox" id="flexCheckMetastasis" name="flexCheckMetastasis" {% if bone_metastasis %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckMetastasis">
-                    Bone Metastasis
+                        Bone Metastasis
                     </label>
                 </div>
                 <h5>Side Effects</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckSideEffect" name="flexCheckSideEffect">
+                    <input class="form-check-input" type="checkbox" id="flexCheckSideEffect" name="flexCheckSideEffect" {% if side_effects %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckSideEffect">
-                    Has Side Effects
+                        Has Side Effects
                     </label>
                 </div>
             </div>
             <div class="col">
                 <h5>Screening Imaging</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckProstateL" name="flexCheckProstateL">
-                    <label class="form-check-label" for="flexCheckProstateL">
-                    Prostate Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckProstateLS" name="flexCheckProstateLS" {% if prostateLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckProstateLS">
+                        Prostate Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLNL" name="flexCheckLNL">
-                    <label class="form-check-label" for="flexCheckLNL">
-                    Lymph Node Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckLNLS" name="flexCheckLNLS" {% if nodeLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckLNLS">
+                        Lymph Node Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBoneL" name="flexCheckBoneL">
-                    <label class="form-check-label" for="flexCheckBoneL">
-                    Bone Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckBoneLS" name="flexCheckBoneLS" {% if boneLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckBoneLS">
+                        Bone Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBrainL" name="flexCheckBrainL">
-                    <label class="form-check-label" for="flexCheckBrainL">
-                    Brain Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckBrainLS" name="flexCheckBrainLS" {% if brainLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckBrainLS">
+                        Brain Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLungL" name="flexCheckLungL">
-                    <label class="form-check-label" for="flexCheckLungL">
-                    Lung Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckLungLS" name="flexCheckLungLS" {% if lungLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckLungLS">
+                        Lung Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLiverL" name="flexCheckLiverL">
-                    <label class="form-check-label" for="flexCheckLiverL">
-                    Liver Lesion
+                    <input class="form-check-input" type="checkbox" id="flexCheckLiverLS" name="flexCheckLiverLS" {% if liverLS %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckLiverLS">
+                        Liver Lesion
                     </label>
                 </div>
             </div>
             <div class="col">
                 <h5>Post-Therapy Imaging</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckProstateLPT" name="flexCheckProstateLPT">
+                    <input class="form-check-input" type="checkbox" id="flexCheckProstateLPT" name="flexCheckProstateLPT" {% if prostateLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckProstateLPT">
-                    Prostate Lesion
+                        Prostate Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLNLPT" name="flexCheckLNLPT">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLNLPT" name="flexCheckLNLPT" {% if nodeLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLNLPT">
-                    Lymph Node Lesion
+                        Lymph Node Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBoneLPT" name="flexCheckBoneLPT">
+                    <input class="form-check-input" type="checkbox" id="flexCheckBoneLPT" name="flexCheckBoneLPT" {% if boneLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckBoneLPT">
-                    Bone Lesion
+                        Bone Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLungLPT" name="flexCheckLungLPT">
+                    <input class="form-check-input" type="checkbox" id="flexCheckBrainLPT" name="flexCheckBrainLPT" {% if brainLPT %}checked{% endif %}>
+                    <label class="form-check-label" for="flexCheckBrainLPT">
+                        Brain Lesion
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLungLPT" name="flexCheckLungLPT" {% if lungLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLungLPT">
-                    Lung Lesion
+                        Lung Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLiverLPT" name="flexCheckLiverLPT">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLiverLPT" name="flexCheckLiverLPT" {% if liverLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLiverLPT">
-                    Liver Lesion
+                        Liver Lesion
                     </label>
                 </div>
             </div>
             <div class="col">
                 <h5>Follow-up Imaging</h5>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckProstateLFU" name="flexCheckProstateLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckProstateLFU" name="flexCheckProstateLFU" {% if prostateLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckProstateLFU">
-                    Prostate Lesion
+                        Prostate Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLNLFU" name="flexCheckLNLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLNLFU" name="flexCheckLNLFU" {% if nodeLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLNLFU">
-                    Lymph Node Lesion
+                        Lymph Node Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBoneLFU" name="flexCheckBoneLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckBoneLFU" name="flexCheckBoneLFU" {% if boneLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckBoneLFU">
-                    Bone Lesion
+                        Bone Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBrainLFU" name="flexCheckBrainLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckBrainLFU" name="flexCheckBrainLFU" {% if brainLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckBrainLFU">
-                    Brain Lesion
+                        Brain Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLungLFU" name="flexCheckLungLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLungLFU" name="flexCheckLungLFU" {% if lungLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLungLFU">
-                    Lung Lesion
+                        Lung Lesion
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckLiverLFU" name="flexCheckLiverLFU">
+                    <input class="form-check-input" type="checkbox" id="flexCheckLiverLFU" name="flexCheckLiverLFU" {% if liverLFU %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLiverLFU">
-                    Liver Lesion
+                        Liver Lesion
                     </label>
                 </div>
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <button type="submit" href="{% url 'patientList' %}" class="btn btn-danger mt-4">Submit</button>
+            <button type="submit" class="btn btn-danger mt-4">Submit</button>
         </div>
     </form>
 </div>
-<div class = "mt-4 container-fluid">
-    <h1 class="title">Patients</h1>
+
+<div class="mt-4 container-fluid">
+    <h1 class="title">PATIENTS</h1>
     <a class="btn btn-success" style="background-color: #871919; border-color: #871919;" href="{% url 'addPatient' %}">Add Patient</a>
-    <div class = "container-fluid mt-4 table-container" style="border-bottom: none; width: 80%;">
+    <div class="container-fluid mt-4 table-container" style="border-bottom: none; width: 80%;">
         {% if patient_count == 1 %}
         <h3 style="color: white;">Showing {{ patient_count }} patient</h3>
         {% else %}
         <h3 style="color: white;">Showing {{ patient_count }} patients</h3>
         {% endif %}
-      {% for patient in patients %}
-      <div class="row border-bottom bg-white p-3 ">
-        <div class="col align-self-center">
-            <h5><a href="{% url 'patientDetails' patient.slug %}" style="text-decoration:  none; color: black">{{patient.name}}</a></h5>
-        </div>
-
-        <div class="col-auto align-self-end text-end">
-            <a href="{% url 'patientDetails' patient.slug %}" class="mr-1"><button type="button" class="btn btn-dark btn-sm" href="{% url 'patientDetails' patient.slug %}">Details</button></a>
-            <a href="{% url 'editPatient' patient.slug %}" class="mr-1"><button type="button" class="btn btn-secondary btn-sm" href="{% url 'editPatient' patient.slug %}">Edit</button></a>
-            <button type="button" class="btn btn-danger btn-sm mr-1" data-bs-toggle="modal" href="#deletePatientPopup{{patient.id}}">Delete</button>
-        </div>
+        {% for patient in patients %}
+        <div class="row border-bottom bg-white p-3">
+            <div class="col align-self-center">
+                <h5><a href="{% url 'patientDetails' patient.slug %}" style="text-decoration: none; color: black">{{patient.name}}</a></h5>
+            </div>
+            <div class="col-auto align-self-end text-end">
+                <a href="{% url 'patientDetails' patient.slug %}" class="mr-1"><button type="button" class="btn btn-dark btn-sm" href="{% url 'patientDetails' patient.slug %}">Details</button></a>
+                <a href="{% url 'editPatient' patient.slug %}" class="mr-1"><button type="button" class="btn btn-secondary btn-sm" href="{% url 'editPatient' patient.slug %}">Edit</button></a>
+                <button type="button" class="btn btn-danger btn-sm mr-1" data-bs-toggle="modal" href="#deletePatientPopup{{patient.id}}">Delete</button>
+            </div>
         </div>
         <!-- Modal -->
-            <div class="modal fade" id="deletePatientPopup{{patient.id}}" tabindex="-1" role="dialog" aria-labelledby="deletePatientLabel" aria-hidden="true">
-                <div class="modal-dialog" style="display: flex; margin-top: 10%;" role="document">
+        <div class="modal fade" id="deletePatientPopup{{patient.id}}" tabindex="-1" role="dialog" aria-labelledby="deletePatientLabel" aria-hidden="true">
+            <div class="modal-dialog" style="display: flex; margin-top: 10%;" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Patient?</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Patient?</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
-                    Delete this patient?
+                        Delete this patient?
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a class="btn btn-danger" href="{% url 'deletePatient' patient.id %}">Delete</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a class="btn btn-danger" href="{% url 'deletePatient' patient.id %}">Delete</a>
                     </div>
                 </div>
-                </div>
             </div>
-        {%endfor%}
+        </div>
+        {% endfor %}
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

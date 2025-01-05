@@ -35,6 +35,23 @@ class EditPhysicalExam(ModelForm):
             'bp' : 'Blood Pressure(mmHg)',
             'hr' : 'Heart Rate(bpm)'
         }
+        widgets = {
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        height = cleaned_data.get('height')
+        weight = cleaned_data.get('weight')
+        
+        if height and weight:
+            # Convert height from cm to meters
+            height_in_meters = height / 100
+            # Calculate BMI and round to nearest integer
+            bmi = round(weight / (height_in_meters * height_in_meters))
+            cleaned_data['bmi'] = bmi
+            
+        return cleaned_data
 
 class AddPhysicalExam(ModelForm):
     class Meta:
@@ -47,6 +64,23 @@ class AddPhysicalExam(ModelForm):
             'bp' : 'Blood Pressure(mmHg)',
             'hr' : 'Heart Rate(bpm)'
         }
+        widgets = {
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+        }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        height = cleaned_data.get('height')
+        weight = cleaned_data.get('weight')
+        
+        if height and weight:
+            # Convert height from cm to meters
+            height_in_meters = height / 100
+            # Calculate BMI and round to nearest integer
+            bmi = round(weight / (height_in_meters * height_in_meters))
+            cleaned_data['bmi'] = bmi
+            
+        return cleaned_data
 
 class AddScreening(ModelForm):
     class Meta:
@@ -58,7 +92,7 @@ class AddScreening(ModelForm):
         'gapsma_bone_lesion_status', 'gapsma_bone_location', 'gapsma_bone_suv', 'gapsma_bone_size',
         'gapsma_brain_lesion_status', 'gapsma_brain_location', 'gapsma_brain_suv', 'gapsma_brain_size',
         'gapsma_lung_lesion_status', 'gapsma_lung_location', 'gapsma_lung_suv', 'gapsma_lung_size',
-        'gapsma_liver_lesion_status', 'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
+        'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
         'fdgpetct_img',
         'fdgpetct_prostate_lesion_status', 'fdgpetct_prostate_location', 'fdgpetct_prostate_suv', 'fdgpetct_prostate_size',
         'fdgpetct_lymph_node_lesion_status', 'fdgpetct_lymph_node_location', 'fdgpetct_lymph_node_suv', 'fdgpetct_lymph_node_size',
@@ -80,6 +114,55 @@ class AddScreening(ModelForm):
             'sgpt' : 'SGPT(units/L)', 
             'sgot' : 'SGOT(units/L)', 
             'bilirubins' : 'Bilirubins(mg/dL)',
+            'salivary_gland_status': 'Salivary Gland Status',
+            'salivary_gland_image': 'Salivary Gland Image',
+            'bone_metastasis_status': 'Bone Metastasis Status',
+            'bone_scan_image': 'Bone Scan Image',
+            'renal_scintigraphy': 'Renal Scintigraphy',
+            'gapsma_choices': 'GA PSMA Type',
+            'gapsma_img': 'GA PSMA Image',
+            'assessment': 'Assessment',
+            'plan': 'Plan'
+        }
+        widgets = {
+            'psa': forms.NumberInput(attrs={'step': 'any'}),
+            'creatinine': forms.NumberInput(attrs={'step': 'any'}),
+            'wbc': forms.NumberInput(attrs={'step': 'any'}),
+            'rbc': forms.NumberInput(attrs={'step': 'any'}),
+            'hemoglobin': forms.NumberInput(attrs={'step': 'any'}),
+            'hematocrit': forms.NumberInput(attrs={'step': 'any'}),
+            'platelet': forms.NumberInput(attrs={'step': 'any'}),
+            'lactate_hydrogenase': forms.NumberInput(attrs={'step': 'any'}),
+            'alkaline_phosphatase': forms.NumberInput(attrs={'step': 'any'}),
+            'sgpt': forms.NumberInput(attrs={'step': 'any'}),
+            'sgot': forms.NumberInput(attrs={'step': 'any'}),
+            'bilirubins': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_prostate_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_prostate_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lymph_node_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lymph_node_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_bone_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_bone_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_brain_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_brain_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lung_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lung_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_liver_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_prostate_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_prostate_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lymph_node_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lymph_node_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_bone_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_bone_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_brain_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_brain_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lung_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any'}),
+            'assessment': forms.Textarea(attrs={'required': True}),
+            'plan': forms.Textarea(attrs={'required': True}),
         }
 
 class EditScreening(ModelForm):
@@ -92,7 +175,7 @@ class EditScreening(ModelForm):
         'gapsma_bone_lesion_status', 'gapsma_bone_location', 'gapsma_bone_suv', 'gapsma_bone_size',
         'gapsma_brain_lesion_status', 'gapsma_brain_location', 'gapsma_brain_suv', 'gapsma_brain_size',
         'gapsma_lung_lesion_status', 'gapsma_lung_location', 'gapsma_lung_suv', 'gapsma_lung_size',
-        'gapsma_liver_lesion_status', 'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
+        'gapsma_liver_lesion_status', 'gapsma_liver_location', 'gapsma_liver_suv', 'gapsma_liver_size',
         'fdgpetct_img',
         'fdgpetct_prostate_lesion_status', 'fdgpetct_prostate_location', 'fdgpetct_prostate_suv', 'fdgpetct_prostate_size',
         'fdgpetct_lymph_node_lesion_status', 'fdgpetct_lymph_node_location', 'fdgpetct_lymph_node_suv', 'fdgpetct_lymph_node_size',
@@ -114,4 +197,53 @@ class EditScreening(ModelForm):
             'sgpt' : 'SGPT(units/L)', 
             'sgot' : 'SGOT(units/L)', 
             'bilirubins' : 'Bilirubins(mg/dL)',
+            'salivary_gland_status': 'Salivary Gland Status',
+            'salivary_gland_image': 'Salivary Gland Image',
+            'bone_metastasis_status': 'Bone Metastasis Status',
+            'bone_scan_image': 'Bone Scan Image',
+            'renal_scintigraphy': 'Renal Scintigraphy',
+            'gapsma_choices': 'GA PSMA Type',
+            'gapsma_img': 'GA PSMA Image',
+            'assessment': 'Assessment',
+            'plan': 'Plan'
+        }
+        widgets = {
+            'psa': forms.NumberInput(attrs={'step': 'any'}),
+            'creatinine': forms.NumberInput(attrs={'step': 'any'}),
+            'wbc': forms.NumberInput(attrs={'step': 'any'}),
+            'rbc': forms.NumberInput(attrs={'step': 'any'}),
+            'hemoglobin': forms.NumberInput(attrs={'step': 'any'}),
+            'hematocrit': forms.NumberInput(attrs={'step': 'any'}),
+            'platelet': forms.NumberInput(attrs={'step': 'any'}),
+            'lactate_hydrogenase': forms.NumberInput(attrs={'step': 'any'}),
+            'alkaline_phosphatase': forms.NumberInput(attrs={'step': 'any'}),
+            'sgpt': forms.NumberInput(attrs={'step': 'any'}),
+            'sgot': forms.NumberInput(attrs={'step': 'any'}),
+            'bilirubins': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_prostate_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_prostate_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lymph_node_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lymph_node_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_bone_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_bone_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_brain_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_brain_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lung_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_lung_size': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'gapsma_liver_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_prostate_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_prostate_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lymph_node_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lymph_node_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_bone_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_bone_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_brain_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_brain_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lung_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
+            'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any'}),
+            'assessment': forms.Textarea(attrs={'required': True}),
+            'plan': forms.Textarea(attrs={'required': True}),
         }
