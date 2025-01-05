@@ -160,4 +160,60 @@
         </div>
     </div>
 </div>
+<script>
+    function toggleLesionFields(organType, scanType) {
+        const status = document.getElementById(`id_${scanType}_${organType}_lesion_status`).value;
+        const fields = ['location', 'suv', 'size'];
+        
+        fields.forEach(field => {
+            const element = document.getElementById(`id_${scanType}_${organType}_${field}`);
+            if (element) {
+                if (status === 'Absent') {
+                    element.value = '';
+                    element.disabled = true;
+                    element.style.backgroundColor = '#f0f0f0';
+                } else {
+                    element.disabled = false;
+                    element.style.backgroundColor = '';
+                }
+            }
+        });
+    }
+
+    // Add event listeners for all lesion status dropdowns
+    document.addEventListener('DOMContentLoaded', function() {
+        const organs = ['prostate', 'lymph_node', 'bone', 'brain', 'lung', 'liver'];
+        const scanTypes = ['gapsma', 'fdgpetct'];
+        
+        organs.forEach(organ => {
+            scanTypes.forEach(scanType => {
+                const statusElement = document.getElementById(`id_${scanType}_${organ}_lesion_status`);
+                if (statusElement) {
+                    toggleLesionFields(organ, scanType);
+                    statusElement.addEventListener('change', () => toggleLesionFields(organ, scanType));
+                }
+            });
+        });
+    });
+
+    // Form validation before submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = ['assessment', 'plan'];
+        let isValid = true;
+        let errorMessage = 'Please fill in the following required fields:\n';
+
+        requiredFields.forEach(field => {
+            const element = document.getElementById(`id_${field}`);
+            if (element && !element.value.trim()) {
+                isValid = false;
+                errorMessage += `- ${field.charAt(0).toUpperCase() + field.slice(1)}\n`;
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            alert(errorMessage);
+        }
+    });
+</script>
 {% endblock content %}
