@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\School Files\HI 191\MP\hi191-grp4-theranostics\theranostics-venv
+set VIRTUAL_ENV=C:\Users\acrpr\OneDrive\Documents\cs23localab\HI191\hi191-grp4-theranostics\theranostics-venv
 
 if not defined PROMPT set PROMPT=$P$G
 

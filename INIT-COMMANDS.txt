@@ -3,7 +3,7 @@ theranostics-venv\Scripts\activate.bat
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser
-    admin
-    aprodriguez7@up.edu.ph 
-    $Qlbench3r20
+    theranosticsadmin
+    aprodriguez7@up.edu.ph
+    theranosticsadmin
 python manage.py runserver
