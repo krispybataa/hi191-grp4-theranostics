@@ -117,6 +117,7 @@ class FollowUp(models.Model):
     fdgpetct_liver_suv = models.DecimalField(verbose_name="Liver SUV", max_digits=5, decimal_places=2, blank=True, null=True)
     fdgpetct_liver_size = models.IntegerField(verbose_name="Liver Lesion Size", blank=True, null=True)
 
-    assessment = models.CharField(max_length=120, choices=ASSESSMENT, blank=True, null=True)
-    plan = models.TextField(max_length=120, blank=True, null=True)
+    # Assessment and Plan fields
+    assessment = models.TextField(blank=True, null=True)
+    plan = models.TextField(blank=True, null=True)
     
