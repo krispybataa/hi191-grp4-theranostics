@@ -4,7 +4,6 @@
 <!-- partial:index.partial.html -->
 {% block content %}
 <div class='dashboard'>
-
     <div class='dashboard-app'>
         <div class='dashboard-content'>
             <div class='container'>
@@ -12,32 +11,57 @@
                     <div class='card-header'>
                         <h1>ADD THERAPY</h1>
                         <br>
-                        <div>
-                        <form method="POST" action ="">
-                            <table>
-                                
-                                <tr>
-                                    {% csrf_token %}
-                                    <tr>{{ form.date_of_psma | as_crispy_field }}</tr>
-                                    <tr>{{ form.premedications | as_crispy_field }}</tr>
-                                    <tr>{{ form.medications | as_crispy_field }}</tr>
-                                    <tr>{{ form.furosemide | as_crispy_field }}</tr>
-                                    <tr>{{ form.systolic | as_crispy_field }}</tr>
-                                    <tr>{{ form.diastolic | as_crispy_field }}</tr>
-                                    <tr>{{ form.hr | as_crispy_field }}</tr>
-                                    <tr>{{ form.rr | as_crispy_field }}</tr>
-                                    <tr>{{ form.saturation | as_crispy_field }}</tr>
-                                    <tr>{{ form.date_therapy | as_crispy_field }}</tr>
-                                    <tr>{{ form.radiopharm | as_crispy_field }}</tr>
-                                    <tr>{{ form.side_effects | as_crispy_field }}</tr>
-                                    <!--ADD MORE FIELDS HERE-->
-                                </tr>
-                            </table> 
-                            <button style="margin-top: 20px;"class="btn btn-success" type="submit">Save Changes</button>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    {{ form.date_of_psma | as_crispy_field }}
+                                    {{ form.premedications | as_crispy_field }}
+                                    {{ form.medications | as_crispy_field }}
+                                    {{ form.furosemide | as_crispy_field }}
+                                    {{ form.systolic | as_crispy_field }}
+                                    {{ form.diastolic | as_crispy_field }}
+                                </div>
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    {{ form.hr | as_crispy_field }}
+                                    {{ form.rr | as_crispy_field }}
+                                    {{ form.saturation | as_crispy_field }}
+                                    {{ form.date_therapy | as_crispy_field }}
+                                    {{ form.radiopharm | as_crispy_field }}
+                                    {{ form.side_effects | as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button class="btn btn-success" type="submit">Save Changes</button>
+                                </div>
+                            </div>
                         </form>
-                </div>
-            </div>        
+                    </div>
+                </div>        
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .btn-success {
+        margin-top: 20px;
+    }
+    /* Make text fields have consistent width */
+    .form-control {
+        width: 100%;
+    }
+    /* Add some spacing between columns on mobile */
+    @media (max-width: 768px) {
+        .col-md-6 {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
 {% endblock content %}
