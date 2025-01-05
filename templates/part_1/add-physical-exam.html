@@ -48,14 +48,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const bmiInput = document.getElementById('id_bmi');
     
     function calculateBMI() {
-        const height = heightInput.value;
-        const weight = weightInput.value;
+        const height = parseFloat(heightInput.value);
+        const weight = parseFloat(weightInput.value);
         
-        if (height && weight) {
+        if (height && weight && !isNaN(height) && !isNaN(weight)) {
             // Convert height from cm to meters
             const heightInMeters = height / 100;
-            const bmi = Math.round(weight / (heightInMeters * heightInMeters));
+            const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(4);
             bmiInput.value = bmi;
+        } else {
+            bmiInput.value = '';
         }
     }
     

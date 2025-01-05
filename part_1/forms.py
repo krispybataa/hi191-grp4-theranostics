@@ -36,22 +36,8 @@ class EditPhysicalExam(ModelForm):
             'hr' : 'Heart Rate(bpm)'
         }
         widgets = {
-            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly', 'step': '0.0001'})
         }
-
-    def clean(self):
-        cleaned_data = super().clean()
-        height = cleaned_data.get('height')
-        weight = cleaned_data.get('weight')
-        
-        if height and weight:
-            # Convert height from cm to meters
-            height_in_meters = height / 100
-            # Calculate BMI and round to nearest integer
-            bmi = round(weight / (height_in_meters * height_in_meters))
-            cleaned_data['bmi'] = bmi
-            
-        return cleaned_data
 
 class AddPhysicalExam(ModelForm):
     class Meta:
@@ -65,7 +51,7 @@ class AddPhysicalExam(ModelForm):
             'hr' : 'Heart Rate(bpm)'
         }
         widgets = {
-            'bmi': forms.NumberInput(attrs={'readonly': 'readonly'})
+            'bmi': forms.NumberInput(attrs={'readonly': 'readonly', 'step': '0.0001'})
         }
         
     def clean(self):
@@ -73,12 +59,16 @@ class AddPhysicalExam(ModelForm):
         height = cleaned_data.get('height')
         weight = cleaned_data.get('weight')
         
-        if height and weight:
-            # Convert height from cm to meters
-            height_in_meters = height / 100
-            # Calculate BMI and round to nearest integer
-            bmi = round(weight / (height_in_meters * height_in_meters))
-            cleaned_data['bmi'] = bmi
+        if height and weight and isinstance(height, (int, float)) and isinstance(weight, (int, float)):
+            try:
+                # Convert height from cm to meters
+                height_in_meters = height / 100
+                # Calculate BMI with 4 decimal places
+                bmi = weight / (height_in_meters * height_in_meters)
+                cleaned_data['bmi'] = round(bmi, 4)
+            except Exception:
+                # If there's any error in calculation, don't set BMI
+                cleaned_data['bmi'] = None
             
         return cleaned_data
 

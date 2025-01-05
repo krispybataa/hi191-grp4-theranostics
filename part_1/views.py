@@ -120,19 +120,29 @@ def patientList(request):
 
     #Post-therapy
     if prostateLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(pt_patient__lesions__exact= 'Prostate')
+        patients = Patient.objects.prefetch_related('pt_patient').filter(
+            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Prostate')
+        )
 
     if nodeLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(pt_patient__lesions__exact= 'Lymph Nodes')
+        patients = Patient.objects.prefetch_related('pt_patient').filter(
+            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lymph Nodes')
+        )
     
     if boneLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(pt_patient__lesions__exact= 'Bones')
+        patients = Patient.objects.prefetch_related('pt_patient').filter(
+            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Bones')
+        )
     
     if lungLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(pt_patient__lesions__exact= 'Lungs')
+        patients = Patient.objects.prefetch_related('pt_patient').filter(
+            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lungs')
+        )
 
     if liverLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(pt_patient__lesions__exact= 'Liver')
+        patients = Patient.objects.prefetch_related('pt_patient').filter(
+            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Liver')
+        )
     
     #Follow-Up
 
@@ -239,17 +249,15 @@ def patientSearch(request):
     # Post-Therapy Imaging Filters
     pt_query = Q()
     if prostateLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_prostate_lesion_status='Present')
+        pt_query |= Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Prostate')
     if nodeLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_lymph_node_lesion_status='Present')
+        pt_query |= Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lymph Nodes')
     if boneLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_bone_lesion_status='Present')
-    if brainLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_brain_lesion_status='Present')
+        pt_query |= Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Bones')
     if lungLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_lung_lesion_status='Present')
+        pt_query |= Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lungs')
     if liverLPT == 'on':
-        pt_query |= Q(posttherapy_patient__gapsma_liver_lesion_status='Present')
+        pt_query |= Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Liver')
     if pt_query:
         query &= pt_query
 
@@ -408,11 +416,14 @@ def addPhysicalExam(request, slug):
 
 @login_required
 def editPhysicalExam(request, slug, id):
+    patient = Patient.objects.get(slug=slug)
     physical_exam = PhysicalExam.objects.get(id=id)
     if request.method == "POST":
         form = EditPhysicalExam(request.POST, instance=physical_exam)
         if form.is_valid():
-            form.save()
+            physical_exam = form.save(commit=False)
+            physical_exam.patient = patient
+            physical_exam.save()
         return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
     else:
         form = EditPhysicalExam(instance=physical_exam)

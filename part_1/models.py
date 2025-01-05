@@ -40,7 +40,7 @@ class PhysicalExam(models.Model):
     ecog_score = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
-    bmi = models.IntegerField(blank=True, null=True)
+    bmi = models.DecimalField(max_digits=7, decimal_places=4, blank=True, null=True)
     bp = models.CharField(max_length=120, blank=True, null=True)
     hr = models.IntegerField(blank=True, null=True)
     pain_score = models.IntegerField(blank=True, null=True)

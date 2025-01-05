@@ -113,12 +113,6 @@
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="flexCheckBrainLPT" name="flexCheckBrainLPT" {% if brainLPT %}checked{% endif %}>
-                    <label class="form-check-label" for="flexCheckBrainLPT">
-                        Brain Lesion
-                    </label>
-                </div>
-                <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="flexCheckLungLPT" name="flexCheckLungLPT" {% if lungLPT %}checked{% endif %}>
                     <label class="form-check-label" for="flexCheckLungLPT">
                         Lung Lesion
@@ -181,11 +175,7 @@
     <h1 class="title">PATIENTS</h1>
     <a class="btn btn-success" style="background-color: #871919; border-color: #871919;" href="{% url 'addPatient' %}">Add Patient</a>
     <div class="container-fluid mt-4 table-container" style="border-bottom: none; width: 80%;">
-        {% if patient_count == 1 %}
-        <h3 style="color: white;">Showing {{ patient_count }} patient</h3>
-        {% else %}
-        <h3 style="color: white;">Showing {{ patient_count }} patients</h3>
-        {% endif %}
+        <h3 style="color: white;">Showing {{ patient_count }} {% if patient_count == 1 %}patient{% else %}patients{% endif %}</h3>
         {% for patient in patients %}
         <div class="row border-bottom bg-white p-3">
             <div class="col align-self-center">
