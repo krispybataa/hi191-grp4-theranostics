@@ -4,7 +4,6 @@
 <!-- partial:index.partial.html -->
 {% block content %}
 <div class='dashboard'>
-
     <div class='dashboard-app'>
         <div class='dashboard-content'>
             <div class='container'>
@@ -41,4 +40,32 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const heightInput = document.getElementById('id_height');
+    const weightInput = document.getElementById('id_weight');
+    const bmiInput = document.getElementById('id_bmi');
+    
+    function calculateBMI() {
+        const height = parseFloat(heightInput.value);
+        const weight = parseFloat(weightInput.value);
+        
+        if (height && weight && !isNaN(height) && !isNaN(weight)) {
+            // Convert height from cm to meters
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(4);
+            bmiInput.value = bmi;
+        } else {
+            bmiInput.value = '';
+        }
+    }
+    
+    heightInput.addEventListener('input', calculateBMI);
+    weightInput.addEventListener('input', calculateBMI);
+    
+    // Make BMI field readonly since it's auto-calculated
+    bmiInput.readOnly = true;
+});
+</script>
 {% endblock content %}

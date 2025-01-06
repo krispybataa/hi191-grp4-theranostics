@@ -39,11 +39,11 @@
                     <br>
                     Date of Physical Exam: {{ physical_exam.date_recorded }}
                     <br>
-                    Height: {{physical_exam.height}}
+                    Height: {{physical_exam.height}} cm
                     <br>
-                    Weight: {{physical_exam.weight}}
+                    Weight: {{physical_exam.weight}} kg
                     <br>
-                    BMI: {{physical_exam.weight}}
+                    BMI: {{physical_exam.bmi|floatformat:4}}
                     <br>
                     Blood Pressure (systolic/diastolic): {{physical_exam.bp}}
                     <br> 
@@ -346,19 +346,19 @@
         <div class = "col">
                 {% if screening %}
                     <h4 class="mt-2">Salivary Gland</h4>
-                    <img src="{{ screening.salivary_gland_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                    <img src="{{ screening.salivary_gland_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
 
                     <h4 class="mt-2">Bone Scan</h4>
-                    <img src="{{ screening.bone_scan_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                    <img src="{{ screening.bone_scan_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
 
                     <h4 class="mt-2">Renal Scintigraphy</h4>
-                    <img src="{{ screening.renal_scintigraphy.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                    <img src="{{ screening.renal_scintigraphy.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
 
                     <h4 class="mt-2">GAPSMA</h4>
-                    <img src="{{ screening.gapsma_img.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                    <img src="{{ screening.gapsma_img.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
 
                     <h4 class="mt-2">FDG PET/CT</h4>
-                    <img src="{{ screening.fdgpetct_img.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                    <img src="{{ screening.fdgpetct_img.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
 
                     
                 
@@ -425,9 +425,9 @@
                                         </div>
                                         <div class="col">
                                             <h5>Lesion Image</h5> 
-                                            <img src="{{ post_therapy.lesion_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                            <img src="{{ post_therapy.lesion_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                             <h5>Dosimetry Image</h5>
-                                            <img src="{{ post_therapy.dosimetry_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                            <img src="{{ post_therapy.dosimetry_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                             <br>
                                         </div>
                                     </div>
@@ -649,19 +649,19 @@
                                         <div class = "col">
                                                 {% if follow_up %}
                                                     <h4 class="mt-2">Salivary Gland</h4>
-                                                    <img src="{{ follow_up.salivary_gland_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                                    <img src="{{ follow_up.salivary_gland_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                 
                                                     <h4 class="mt-2">Bone Scan</h4>
-                                                    <img src="{{ follow_up.bone_scan_image.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                                    <img src="{{ follow_up.bone_scan_image.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                 
                                                     <h4 class="mt-2">Renal Scintigraphy</h4>
-                                                    <img src="{{ follow_up.renal_scintigraphy.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                                    <img src="{{ follow_up.renal_scintigraphy.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                 
                                                     <h4 class="mt-2">GAPSMA</h4>
-                                                    <img src="{{ follow_up.gapsma_img.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                                    <img src="{{ follow_up.gapsma_img.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                 
                                                     <h4 class="mt-2">FDG PET/CT</h4>
-                                                    <img src="{{ follow_up.fdgpetct_img.url }}" alt="" width="200" style="border-radius: 5px; border: solid maroon;">
+                                                    <img src="{{ follow_up.fdgpetct_img.url }}" alt="" width="400" style="border-radius: 5px; border: solid maroon;">
                                                 {% endif %}
                                         </div>
                                     </div>
