@@ -25,4 +25,4 @@ class Therapy(models.Model):
     saturation = models.IntegerField(blank=True, null=True)
     date_therapy = models.DateField()
     radiopharm = models.CharField(max_length=120, null=True, blank=True)
-    side_effects = MultiSelectField(choices=SIDE_EFFECTS, blank=True, null=True)
+    side_effects = MultiSelectField(choices=SIDE_EFFECTS, max_length=100, max_choices=5, blank=True, null=True)
