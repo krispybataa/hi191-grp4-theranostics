@@ -11,18 +11,18 @@ class FollowUp(models.Model):
     id = models.AutoField(primary_key=True)
     slug = models.SlugField(null=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='fu_patient')
-    psa = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    creatinine = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    wbc = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    rbc = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    hemoglobin = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    hematocrit = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    platelet = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    lactate_hydrogenase = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    alkaline_phosphatase = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    sgpt = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    sgot = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    bilirubins = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    psa = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    creatinine = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    wbc = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    rbc = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    hemoglobin = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    hematocrit = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    platelet = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    lactate_hydrogenase = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    alkaline_phosphatase = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    sgpt = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    sgot = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    bilirubins = models.DecimalField(blank=True, null=True)  # Removed max_digits and decimal_places restrictions
 
     SALIVARY_GLAND_STATUS = (
         ('Normal', 'Normal'),
@@ -47,77 +47,71 @@ class FollowUp(models.Model):
     gapsma_choices = models.CharField(max_length=120, choices=GAPSMA, blank=True, null=True)
     gapsma_img = models.ImageField(upload_to="images/")
 
-##THIS SEGMENT NEEDS OPTIMIZATION##
-    # GAPSMA Lesions
     LESION_STATUS = (
         ('Absent', 'Absent'),
         ('Present', 'Present')
     )
     gapsma_prostate_lesion_status = models.CharField(verbose_name="Prostate Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_prostate_location = models.CharField(verbose_name="Prostate Location", max_length=50, null=True, blank=True)
-    gapsma_prostate_suv = models.DecimalField(verbose_name="Prostate SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_prostate_size = models.IntegerField(verbose_name="Prostate Lesion Size", blank=True, null=True)
+    gapsma_prostate_suv = models.DecimalField(verbose_name="Prostate SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_prostate_size = models.IntegerField(verbose_name="Prostate Lesion Size", blank=True, null=True)  # Removed restrictions
 
     gapsma_lymph_node_lesion_status = models.CharField(verbose_name="Lymph Node Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_lymph_node_location = models.CharField(verbose_name="Lymph Node Location", max_length=50, null=True, blank=True)
-    gapsma_lymph_node_suv = models.DecimalField(verbose_name="Lymph Node SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_lymph_node_size = models.IntegerField(verbose_name="Lymph Node Lesion Size", blank=True, null=True)
+    gapsma_lymph_node_suv = models.DecimalField(verbose_name="Lymph Node SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_lymph_node_size = models.IntegerField(verbose_name="Lymph Node Lesion Size", blank=True, null=True)  # Removed restrictions
 
     gapsma_bone_lesion_status = models.CharField(verbose_name="Bone Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_bone_location = models.CharField(verbose_name="Bone Lesion Location", max_length=50, null=True, blank=True)
-    gapsma_bone_suv = models.DecimalField(verbose_name="Bone SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_bone_size = models.IntegerField(verbose_name="Bone Lesion Size", blank=True, null=True)
+    gapsma_bone_suv = models.DecimalField(verbose_name="Bone SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_bone_size = models.IntegerField(verbose_name="Bone Lesion Size", blank=True, null=True)  # Removed restrictions
 
     gapsma_brain_lesion_status = models.CharField(verbose_name="Brain Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_brain_location = models.CharField(verbose_name="Brain Lesion Location", max_length=50, null=True, blank=True)
-    gapsma_brain_suv = models.DecimalField(verbose_name="Brain SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_brain_size = models.IntegerField(verbose_name="Brain Lesion Size", blank=True, null=True)
+    gapsma_brain_suv = models.DecimalField(verbose_name="Brain SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_brain_size = models.IntegerField(verbose_name="Brain Lesion Size", blank=True, null=True)  # Removed restrictions
 
     gapsma_lung_lesion_status = models.CharField(verbose_name="Lung Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_lung_location = models.CharField(verbose_name="Lung Lesion Location", max_length=50, null=True, blank=True)
-    gapsma_lung_suv = models.DecimalField(verbose_name="Lung SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_lung_size = models.IntegerField(verbose_name="Lung Lesion Size", blank=True, null=True)
+    gapsma_lung_suv = models.DecimalField(verbose_name="Lung SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_lung_size = models.IntegerField(verbose_name="Lung Lesion Size", blank=True, null=True)  # Removed restrictions
 
     gapsma_liver_lesion_status = models.CharField(verbose_name="Liver Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     gapsma_liver_location = models.CharField(verbose_name="Liver Lesion Location", max_length=50, null=True, blank=True)
-    gapsma_liver_suv = models.DecimalField(verbose_name="Liver SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    gapsma_liver_size = models.IntegerField(verbose_name="Liver Lesion Size", blank=True, null=True)
+    gapsma_liver_suv = models.DecimalField(verbose_name="Liver SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    gapsma_liver_size = models.IntegerField(verbose_name="Liver Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_img = models.ImageField(upload_to="images/")
 
-    # For fdgpetct
-
     fdgpetct_prostate_lesion_status = models.CharField(verbose_name="Prostate Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_prostate_location = models.CharField(verbose_name="Prostate Location", max_length=50, null=True, blank=True)
-    fdgpetct_prostate_suv = models.DecimalField(verbose_name="Prostate SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_prostate_size = models.IntegerField(verbose_name="Prostate Lesion Size", blank=True, null=True)
+    fdgpetct_prostate_suv = models.DecimalField(verbose_name="Prostate SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_prostate_size = models.IntegerField(verbose_name="Prostate Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_lymph_node_lesion_status = models.CharField(verbose_name="Lymph Node Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_lymph_node_location = models.CharField(verbose_name="Lymph Node Location", max_length=50, null=True, blank=True)
-    fdgpetct_lymph_node_suv = models.DecimalField(verbose_name="Lymph Node SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_lymph_node_size = models.IntegerField(verbose_name="Lymph Node Lesion Size", blank=True, null=True)
+    fdgpetct_lymph_node_suv = models.DecimalField(verbose_name="Lymph Node SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_lymph_node_size = models.IntegerField(verbose_name="Lymph Node Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_bone_lesion_status = models.CharField(verbose_name="Bone Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_bone_location = models.CharField(verbose_name="Bone Lesion Location", max_length=50, null=True, blank=True)
-    fdgpetct_bone_suv = models.DecimalField(verbose_name="Bone SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_bone_size = models.IntegerField(verbose_name="Bone Lesion Size", blank=True, null=True)
+    fdgpetct_bone_suv = models.DecimalField(verbose_name="Bone SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_bone_size = models.IntegerField(verbose_name="Bone Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_brain_lesion_status = models.CharField(verbose_name="Brain Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_brain_location = models.CharField(verbose_name="Brain Lesion Location", max_length=50, null=True, blank=True)
-    fdgpetct_brain_suv = models.DecimalField(verbose_name="Brain SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_brain_size = models.IntegerField(verbose_name="Brain Lesion Size", blank=True, null=True)
+    fdgpetct_brain_suv = models.DecimalField(verbose_name="Brain SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_brain_size = models.IntegerField(verbose_name="Brain Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_lung_lesion_status = models.CharField(verbose_name="Lung Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_lung_location = models.CharField(verbose_name="Lung Lesion Location", max_length=50, null=True, blank=True)
-    fdgpetct_lung_suv = models.DecimalField(verbose_name="Lung SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_lung_size = models.IntegerField(verbose_name="Lung Lesion Size", blank=True, null=True)
+    fdgpetct_lung_suv = models.DecimalField(verbose_name="Lung SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_lung_size = models.IntegerField(verbose_name="Lung Lesion Size", blank=True, null=True)  # Removed restrictions
 
     fdgpetct_liver_lesion_status = models.CharField(verbose_name="Liver Lesion Status", max_length=120, choices = LESION_STATUS, null=True, blank=True)
     fdgpetct_liver_location = models.CharField(verbose_name="Liver Lesion Location", max_length=50, null=True, blank=True)
-    fdgpetct_liver_suv = models.DecimalField(verbose_name="Liver SUV", max_digits=5, decimal_places=2, blank=True, null=True)
-    fdgpetct_liver_size = models.IntegerField(verbose_name="Liver Lesion Size", blank=True, null=True)
+    fdgpetct_liver_suv = models.DecimalField(verbose_name="Liver SUV", blank=True, null=True)  # Removed max_digits and decimal_places restrictions
+    fdgpetct_liver_size = models.IntegerField(verbose_name="Liver Lesion Size", blank=True, null=True)  # Removed restrictions
 
-    # Assessment and Plan fields
-    assessment = models.TextField(blank=True, null=True)
-    plan = models.TextField(blank=True, null=True)
-    
+    assessment = models.CharField(max_length=120, choices=ASSESSMENT, blank=True, null=True)
+    plan = models.TextField(max_length=120, blank=True, null=True)

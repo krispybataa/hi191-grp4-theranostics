@@ -2,14 +2,7 @@ from django.db import models
 from part_1.models import *
 from multiselectfield import MultiSelectField
 
-# class Equipment(models.Model):
-#     name = models.CharField(max_length=300,null=True)
-#     slug = models.SlugField(null=True)
-    
-#     def __str__(self):
-#         return self.name
-
-#CLASS THERAPY ONLY SUPPORTS ONE ENTRY PER PATIENT AS OF NOW. OPTIMIZE LATER    
+# CLASS THERAPY ONLY SUPPORTS ONE ENTRY PER PATIENT AS OF NOW. OPTIMIZE LATER
 
 class Therapy(models.Model):
     SIDE_EFFECTS = (
@@ -32,6 +25,4 @@ class Therapy(models.Model):
     saturation = models.IntegerField(blank=True, null=True)
     date_therapy = models.DateField()
     radiopharm = models.CharField(max_length=120, null=True, blank=True)
-    side_effects = MultiSelectField(max_length=120, choices = SIDE_EFFECTS)
-
-
+    side_effects = MultiSelectField(choices=SIDE_EFFECTS, blank=True, null=True)
