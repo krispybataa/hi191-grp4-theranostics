@@ -422,10 +422,13 @@ def editPhysicalExam(request, slug, id):
             physical_exam = form.save(commit=False)
             physical_exam.patient = patient
             physical_exam.save()
-        return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
+            return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
+        else:
+            context = {'form': form}
+            return render(request, "part_1/edit-physical-exam.html", context)
     else:
         form = EditPhysicalExam(instance=physical_exam)
-        context = {'form' : form}
+        context = {'form': form}
         return render(request, "part_1/edit-physical-exam.html", context)
 
 @login_required 

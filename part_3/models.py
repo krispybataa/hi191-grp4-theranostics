@@ -2,7 +2,11 @@ from django.db import models
 from part_1.models import Patient
 
 from multiselectfield import MultiSelectField
+from django.core.exceptions import ValidationError
 
+def validate_positive(value):
+    if value <= 0:
+        raise ValidationError('Value must be positive')
 
 
 # Create your models here.
@@ -45,11 +49,11 @@ class PostTherapy(models.Model):
 
     #Dosimetry
 
-    salivary_gland = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    salivary_gland = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, validators=[validate_positive])
 
-    kidney_left = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    kidney_left = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, validators=[validate_positive])
 
-    kidney_right = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    kidney_right = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, validators=[validate_positive])
 
     dosimetry_image = models.ImageField(upload_to="images/")
 

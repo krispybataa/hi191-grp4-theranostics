@@ -1,9 +1,9 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from django.template.defaultfilters import slugify
 from datetime import datetime
 from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
 
 def validate_positive(value):
     if value <= 0:
@@ -77,7 +77,7 @@ class PhysicalExam(models.Model):
 
     weight = models.IntegerField(blank=True, validators=[validate_positive])
 
-    bmi = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    bmi = models.FloatField(blank=True, null=True, validators=[validate_positive])
 
     bp = models.CharField(max_length=120, blank=True)
 

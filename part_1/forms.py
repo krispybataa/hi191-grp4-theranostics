@@ -140,6 +140,17 @@ class EditPhysicalExam(forms.ModelForm):
             'pain_score': forms.NumberInput(attrs={'min': '1'})
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        height = cleaned_data.get('height')
+        weight = cleaned_data.get('weight')
+
+        if height and weight:
+            bmi = round((weight / ((height/100) ** 2)), 4)
+            cleaned_data['bmi'] = bmi
+
+        return cleaned_data
+
     def clean_ecog_score(self):
         ecog_score = self.cleaned_data['ecog_score']
         if ecog_score < 0:
