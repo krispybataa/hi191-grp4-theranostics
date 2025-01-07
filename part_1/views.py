@@ -38,8 +38,15 @@ def register(request):
 
 @login_required
 def patientList(request):
-    # Start with base queryset that only includes patients with screening data
-    patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__isnull=False).distinct()
+    # Check if any filters are active
+    has_active_filters = any(param for param, value in request.GET.items() if value == 'on')
+    
+    # If no filters are active, show all patients
+    if not has_active_filters:
+        patients = Patient.objects.all()
+    else:
+        # Start with base queryset that only includes patients with screening data when filters are active
+        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__isnull=False)
     
     # Get filter parameters
     low_risk = request.GET.get('flexCheckLowRisk')
@@ -146,7 +153,13 @@ def patientList(request):
     if fu_lesion_filters:
         patients = patients.filter(fu_lesion_filters)
 
-    return render(request, 'part_1/patient-list.html', {'patients': patients.distinct()})
+    # Apply distinct and prepare context with patient count
+    patients = patients.distinct()
+    context = {
+        'patients': patients,
+        'patient_count': patients.count()
+    }
+    return render(request, 'part_1/patient-list.html', context)
 
 @login_required
 def patientSearch(request):

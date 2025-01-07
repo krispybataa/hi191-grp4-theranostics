@@ -14,67 +14,83 @@
     {% block extracss %}
     {% endblock extracss %}
 
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .custom-header>*>h5 {
+            font-weight: bold;
+        }
+
+        .title {
+            color: black;
+            font-size: xx-large;
+        }
+
+        label {
+            font-weight: normal;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .custom-nav {
+            background-image: linear-gradient(to right, maroon, rgb(37, 37, 37));
+            box-shadow: 0px 5px 5px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .custom-creds {
+            gap: 1.5rem;
+        }
+
+        .nav-button {
+            transition: 0.25s;
+        }
+
+        .nav-button:hover {
+            font-weight: bold;
+            color: #f8f9fa;
+        }
+        
+        /* Change the link color to #111 (black) on hover */
+        /*li a:hover {
+      background-image: linear-gradient(maroon, rgb(41, 41, 41));
+    }*/
+    </style>
+
+    <script>
+        function clearAndRedirect(event) {
+            event.preventDefault();
+            // Get all checkboxes in the page and uncheck them
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            // Clear any search input
+            const searchInput = document.querySelector('input[name="search_query"]');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            // Redirect to patients list without any parameters
+            window.location.href = "{% url 'patientList' %}";
+        }
+    </script>
 </head>
-<style>
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
-
-    .custom-header>*>h5 {
-        font-weight: bold;
-    }
-
-    .title {
-        color: black;
-        font-size: xx-large;
-    }
-
-    label {
-        font-weight: normal;
-    }
-
-    li {
-        float: left;
-    }
-
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-    .custom-nav {
-        background-image: linear-gradient(to right, maroon, rgb(37, 37, 37));
-        box-shadow: 0px 5px 5px rgba(0,0,0,0.15);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-
-    .custom-creds {
-        gap: 1.5rem;
-    }
-
-    .nav-button {
-        transition: 0.25s;
-    }
-
-    .nav-button:hover {
-        font-weight: bold;
-        color: #f8f9fa;
-    }
-    
-    /* Change the link color to #111 (black) on hover */
-    /*li a:hover {
-  background-image: linear-gradient(maroon, rgb(41, 41, 41));
-}*/
-</style>
-
 <body>
     <div class="py-2 px-4 custom-nav">
         <div class="d-flex justify-content-between align-items-center">
@@ -83,7 +99,7 @@
             </a>
             <ul>
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'patientList' %}" class="nav-button">Patients</a></li>
+                <li><a href="{% url 'patientList' %}" class="nav-button" onclick="clearAndRedirect(event)">Patients</a></li>
                 {% endif %}
                 <li><a href="{% url 'homePage' %}" class="nav-button">About</a></li>
                 {% if user.is_superuser %}

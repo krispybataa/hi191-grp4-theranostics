@@ -165,14 +165,26 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center gap-2">
             <button type="submit" class="btn btn-danger mt-4">Submit</button>
+            <button type="button" class="btn btn-secondary mt-4" onclick="clearFilters()">Clear Filters</button>
         </div>
     </form>
 </div>
 
+<script>
+function clearFilters() {
+    // Get all checkboxes and uncheck them
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    // Submit the form to apply the cleared filters
+    document.querySelector('form').submit();
+}
+</script>
+
 <div class="mt-4 container-fluid">
-    <h1 class="title">PATIENTS</h1>
+    <h1 class="title">PATIENTS ({{ patient_count }})</h1>
     <a class="btn btn-success" style="background-color: #871919; border-color: #871919;" href="{% url 'addPatient' %}">Add Patient</a>
     <div class="container-fluid mt-4 table-container" style="border-bottom: none; width: 80%;">
         <h3 style="color: white;">Showing {{ patient_count }} {% if patient_count == 1 %}patient{% else %}patients{% endif %}</h3>
