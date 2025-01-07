@@ -51,13 +51,13 @@
                                             <td>{{ form.bilirubins | as_crispy_field }}</td>
                                         </tr>
                                     </table>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Salivary Gland Status</h4>
                                         {{ form.salivary_gland_status | as_crispy_field }}
                                         {{ form.salivary_gland_image | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Bone Metastasis Status</h4>
                                         {{ form.bone_metastasis_status | as_crispy_field }}
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <!-- GAPSMA Section -->
                             <div class="screening-section active">
                                 <div class="screening-header">
@@ -84,7 +84,7 @@
                                         {{ form.gapsma_prostate_suv | as_crispy_field }}
                                         {{ form.gapsma_prostate_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Lymph Node</h4>
                                         {{ form.gapsma_lymph_node_lesion_status | as_crispy_field }}
@@ -92,7 +92,7 @@
                                         {{ form.gapsma_lymph_node_suv | as_crispy_field }}
                                         {{ form.gapsma_lymph_node_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Bone</h4>
                                         {{ form.gapsma_bone_lesion_status | as_crispy_field }}
@@ -100,7 +100,7 @@
                                         {{ form.gapsma_bone_suv | as_crispy_field }}
                                         {{ form.gapsma_bone_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Brain</h4>
                                         {{ form.gapsma_brain_lesion_status | as_crispy_field }}
@@ -108,7 +108,7 @@
                                         {{ form.gapsma_brain_suv | as_crispy_field }}
                                         {{ form.gapsma_brain_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Lung</h4>
                                         {{ form.gapsma_lung_lesion_status | as_crispy_field }}
@@ -116,7 +116,7 @@
                                         {{ form.gapsma_lung_suv | as_crispy_field }}
                                         {{ form.gapsma_lung_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Liver</h4>
                                         {{ form.gapsma_liver_lesion_status | as_crispy_field }}
@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <!-- FDGPETCT Section -->
                             <div class="screening-section active">
                                 <div class="screening-header">
@@ -143,7 +143,7 @@
                                         {{ form.fdgpetct_prostate_suv | as_crispy_field }}
                                         {{ form.fdgpetct_prostate_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Lymph Node</h4>
                                         {{ form.fdgpetct_lymph_node_lesion_status | as_crispy_field }}
@@ -151,7 +151,7 @@
                                         {{ form.fdgpetct_lymph_node_suv | as_crispy_field }}
                                         {{ form.fdgpetct_lymph_node_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Bone</h4>
                                         {{ form.fdgpetct_bone_lesion_status | as_crispy_field }}
@@ -159,7 +159,7 @@
                                         {{ form.fdgpetct_bone_suv | as_crispy_field }}
                                         {{ form.fdgpetct_bone_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Brain</h4>
                                         {{ form.fdgpetct_brain_lesion_status | as_crispy_field }}
@@ -167,7 +167,7 @@
                                         {{ form.fdgpetct_brain_suv | as_crispy_field }}
                                         {{ form.fdgpetct_brain_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Lung</h4>
                                         {{ form.fdgpetct_lung_lesion_status | as_crispy_field }}
@@ -175,7 +175,7 @@
                                         {{ form.fdgpetct_lung_suv | as_crispy_field }}
                                         {{ form.fdgpetct_lung_size | as_crispy_field }}
                                     </div>
-
+                                    
                                     <div class="mt-3">
                                         <h4>Liver</h4>
                                         {{ form.fdgpetct_liver_lesion_status | as_crispy_field }}
@@ -185,9 +185,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <!-- Assessment and Plan Section -->
-                            <div class="screening-section active">
+                            <div class="screening-section">
                                 <div class="screening-header">
                                     <h3>Assessment and Plan</h3>
                                     <span class="toggle-icon">▼</span>
@@ -198,17 +198,19 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-success mt-3">Save Changes</button>
-                        </form>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-{% endblock content %}
-
-{% block extrascripts %}
-<script src="{% static 'js/screening.js' %}"></script>
-{% endblock extrascripts %}
+    
+    {% endblock content %}
+    
+    {% block extrascripts %}
+    <script src="{% static 'js/screening.js' %}"></script>
+    {% endblock extrascripts %}
+    

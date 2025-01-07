@@ -61,7 +61,7 @@ class AddFollowUp(ModelForm):
             'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any'}),
             'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
             'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any'}),
-            'assessment': forms.Textarea(attrs={'required': True}),
+            'assessment': forms.Select(choices=FollowUp.ASSESSMENT, attrs={'required': True}),
             'plan': forms.Textarea(attrs={'required': True}),
         }
         labels = {
@@ -195,7 +195,7 @@ class EditFollowUp(ModelForm):
             'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any'}),
             'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any'}),
             'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any'}),
-            'assessment': forms.Textarea(attrs={'required': True}),
+            'assessment': forms.Select(choices=FollowUp.ASSESSMENT, attrs={'required': True}),
             'plan': forms.Textarea(attrs={'required': True}),
         }
         labels = {

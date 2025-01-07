@@ -249,7 +249,7 @@ class AddScreening(forms.ModelForm):
             'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
             'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
             'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
-            'assessment': forms.Textarea(attrs={'required': True}),
+            'assessment': forms.Select(choices=Screening.ASSESSMENT, attrs={'required': True}),
             'plan': forms.Textarea(attrs={'required': True}),
         }
 
@@ -525,6 +525,6 @@ class EditScreening(forms.ModelForm):
             'fdgpetct_lung_size': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
             'fdgpetct_liver_suv': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
             'fdgpetct_liver_size': forms.NumberInput(attrs={'step': 'any', 'min': '0'}),
-            'assessment': forms.Textarea(attrs={'required': True}),
+            'assessment': forms.Select(choices=Screening.ASSESSMENT, attrs={'required': True}),
             'plan': forms.Textarea(attrs={'required': True}),
         }
