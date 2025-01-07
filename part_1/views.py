@@ -38,7 +38,10 @@ def register(request):
 
 @login_required
 def patientList(request):
-    patients = Patient.objects.all()
+    # Start with base queryset that only includes patients with screening data
+    patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__isnull=False).distinct()
+    
+    # Get filter parameters
     low_risk = request.GET.get('flexCheckLowRisk')
     intermediate_risk = request.GET.get('flexCheckIntermediateRisk')
     high_risk = request.GET.get('flexCheckHighRisk')
@@ -65,109 +68,84 @@ def patientList(request):
     lungLFU = request.GET.get('flexCheckLungLFU')
     liverLFU = request.GET.get('flexCheckLiverLFU')
 
-
-    #Risk Assessment
+    # Build risk assessment filter
+    risk_filters = Q()
     if low_risk == 'on':
-        if intermediate_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Low Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Intermediate Risk')
-        elif high_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Low Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'High Risk')
-        else:
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Low Risk')
-
+        risk_filters |= Q(screening_patient__assessment__exact='Low Risk')
     if intermediate_risk == 'on':
-        if low_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Low Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Intermediate Risk')
-        elif high_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Intermediate Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'High Risk')
-        else:
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Intermediate Risk')
-
+        risk_filters |= Q(screening_patient__assessment__exact='Intermediate Risk')
     if high_risk == 'on':
-        if low_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'High Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Low Risk')
-        elif intermediate_risk == 'on':
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'High Risk') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'Intermediate Risk')
-        else:
-            patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__assessment__exact = 'High Risk')
-    
-    #Bone Metastasis
+        risk_filters |= Q(screening_patient__assessment__exact='High Risk')
+    if risk_filters:
+        patients = patients.filter(risk_filters)
+
+    # Bone Metastasis
     if bone_metastasis == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__bone_metastasis_status = 'Metastasis')
+        patients = patients.filter(screening_patient__bone_metastasis_status='Metastasis')
 
-    #Side Effect
+    # Side Effect
     if side_effects == 'on':
-        patients = Patient.objects.prefetch_related('t_patient').filter(t_patient__side_effects__isnull=False)
+        patients = patients.filter(t_patient__side_effects__isnull=False)
 
-    #Screening Filters
+    # Build screening lesion filters
+    lesion_filters = Q()
     if prostateLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_prostate_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_prostate_lesion_status__exact= 'Present')
-
+        lesion_filters |= (Q(screening_patient__gapsma_prostate_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_prostate_lesion_status='Present'))
     if nodeLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_lymph_node_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_lymph_node_lesion_status__exact= 'Present')
-    
+        lesion_filters |= (Q(screening_patient__gapsma_lymph_node_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_lymph_node_lesion_status='Present'))
     if boneLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_bone_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_bone_lesion_status__exact= 'Present')
-
+        lesion_filters |= (Q(screening_patient__gapsma_bone_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_bone_lesion_status='Present'))
     if brainLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_brain_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_brain_lesion_status__exact= 'Present')
-    
+        lesion_filters |= (Q(screening_patient__gapsma_brain_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_brain_lesion_status='Present'))
     if lungLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_lung_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_lung_lesion_status__exact= 'Present') 
-
+        lesion_filters |= (Q(screening_patient__gapsma_lung_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_lung_lesion_status='Present'))
     if liverLS == 'on':
-        patients = Patient.objects.prefetch_related('screening_patient').filter(screening_patient__gapsma_liver_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('screening_patient').filter(screening_patient__fdgpetct_liver_lesion_status__exact= 'Present')
+        lesion_filters |= (Q(screening_patient__gapsma_liver_lesion_status='Present') | 
+                          Q(screening_patient__fdgpetct_liver_lesion_status='Present'))
+    if lesion_filters:
+        patients = patients.filter(lesion_filters)
 
-    #Post-therapy
+    # Post-therapy filters
     if prostateLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(
-            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Prostate')
-        )
-
+        patients = patients.filter(Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Prostate'))
     if nodeLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(
-            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lymph Nodes')
-        )
-    
+        patients = patients.filter(Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lymph Nodes'))
     if boneLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(
-            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Bones')
-        )
-    
+        patients = patients.filter(Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Bones'))
     if lungLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(
-            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lungs')
-        )
-
+        patients = patients.filter(Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Lungs'))
     if liverLPT == 'on':
-        patients = Patient.objects.prefetch_related('pt_patient').filter(
-            Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Liver')
-        )
-    
-    #Follow-Up
+        patients = patients.filter(Q(pt_patient__isnull=False) & Q(pt_patient__lesions__icontains='Liver'))
 
+    # Follow-up filters
+    fu_lesion_filters = Q()
     if prostateLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_prostate_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_prostate_lesion_status__exact= 'Present')
-
+        fu_lesion_filters |= (Q(fu_patient__gapsma_prostate_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_prostate_lesion_status='Present'))
     if nodeLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_lymph_node_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_lymph_node_lesion_status__exact= 'Present')
-    
+        fu_lesion_filters |= (Q(fu_patient__gapsma_lymph_node_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_lymph_node_lesion_status='Present'))
     if boneLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_bone_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_bone_lesion_status__exact= 'Present')
-
+        fu_lesion_filters |= (Q(fu_patient__gapsma_bone_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_bone_lesion_status='Present'))
     if brainLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_brain_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_brain_lesion_status__exact= 'Present')
-    
+        fu_lesion_filters |= (Q(fu_patient__gapsma_brain_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_brain_lesion_status='Present'))
     if lungLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_lung_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_lung_lesion_status__exact= 'Present') 
-
+        fu_lesion_filters |= (Q(fu_patient__gapsma_lung_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_lung_lesion_status='Present'))
     if liverLFU == 'on':
-        patients = Patient.objects.prefetch_related('fu_patient').filter(fu_patient__gapsma_liver_lesion_status__exact= 'Present') | Patient.objects.prefetch_related('fu_patient').filter(fu_patient__fdgpetct_liver_lesion_status__exact= 'Present')
+        fu_lesion_filters |= (Q(fu_patient__gapsma_liver_lesion_status='Present') | 
+                             Q(fu_patient__fdgpetct_liver_lesion_status='Present'))
+    if fu_lesion_filters:
+        patients = patients.filter(fu_lesion_filters)
 
-    count = patients.count
-
-    context = {'patients': patients, 'patient_count' : count}
-    return render(request, 'part_1/patient-list.html', context)
+    return render(request, 'part_1/patient-list.html', {'patients': patients.distinct()})
 
 @login_required
 def patientSearch(request):
@@ -264,17 +242,17 @@ def patientSearch(request):
     # Follow-up Imaging Filters
     fu_query = Q()
     if prostateLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_prostate_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_prostate_lesion_status='Present') | Q(fu_patient__fdgpetct_prostate_lesion_status='Present')
     if nodeLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_lymph_node_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_lymph_node_lesion_status='Present') | Q(fu_patient__fdgpetct_lymph_node_lesion_status='Present')
     if boneLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_bone_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_bone_lesion_status='Present') | Q(fu_patient__fdgpetct_bone_lesion_status='Present')
     if brainLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_brain_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_brain_lesion_status='Present') | Q(fu_patient__fdgpetct_brain_lesion_status='Present')
     if lungLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_lung_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_lung_lesion_status='Present') | Q(fu_patient__fdgpetct_lung_lesion_status='Present')
     if liverLFU == 'on':
-        fu_query |= Q(followup_patient__gapsma_liver_lesion_status='Present')
+        fu_query |= Q(fu_patient__gapsma_liver_lesion_status='Present') | Q(fu_patient__fdgpetct_liver_lesion_status='Present')
     if fu_query:
         query &= fu_query
 
@@ -368,29 +346,35 @@ def deletePatient(request, pk):
 @login_required
 def addScreening(request, slug):
     patient = Patient.objects.get(slug=slug)
-    form = AddScreening()
     if request.method == "POST":
         form = AddScreening(request.POST, request.FILES)
         if form.is_valid():
-            build = form.save(False)
+            build = form.save(commit=False)
             build.patient = patient
             build.save()
             return redirect(reverse('patientDetails',kwargs={'slug':slug}))
-# def
-    context={'form':form, 'patient': patient}
-    return render(request,"part_1/add-screening.html",context)
+        else:
+            context = {'form': form, 'patient': patient}
+            return render(request, "part_1/add-screening.html", context)
+    else:
+        form = AddScreening()
+        context = {'form': form, 'patient': patient}
+        return render(request, "part_1/add-screening.html", context)
 
 @login_required
 def editScreening(request, slug, id):
-    physical_exam = Screening.objects.get(id=id)
+    screening = Screening.objects.get(id=id)
     if request.method == "POST":
-        form = EditScreening(request.POST, instance=physical_exam)
+        form = EditScreening(request.POST, request.FILES, instance=screening)
         if form.is_valid():
             form.save()
-        return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
+            return redirect(reverse('patientDetails', kwargs={'slug':slug}))
+        else:
+            context = {'form': form}
+            return render(request, "part_1/edit-screening.html", context)
     else:
-        form = EditScreening(instance=physical_exam)
-        context = {'form' : form}
+        form = EditScreening(instance=screening)
+        context = {'form': form}
         return render(request, "part_1/edit-screening.html", context)
 
 @login_required
@@ -548,13 +532,16 @@ def addFollowUp(request, slug):
 def editFollowUp(request, slug, id):
     follow_up = FollowUp.objects.get(id=id)
     if request.method == "POST":
-        form = EditFollowUp(request.POST, instance=follow_up)
+        form = EditFollowUp(request.POST, request.FILES, instance=follow_up)
         if form.is_valid():
             form.save()
-        return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
+            return HttpResponseRedirect(reverse_lazy('patientDetails', kwargs={"slug":slug}))
+        else:
+            context = {'form': form}
+            return render(request, "part_4/edit-follow-up.html", context)
     else:
         form = EditFollowUp(instance=follow_up)
-        context = {'form' : form}
+        context = {'form': form}
         return render(request, "part_4/edit-follow-up.html", context)
 
 @login_required

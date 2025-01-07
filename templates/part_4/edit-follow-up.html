@@ -4,63 +4,6 @@
 
 {% block extracss %}
 <link rel="stylesheet" href="{% static 'css/screening.css' %}">
-<style>
-    .card-header h1 {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 500;
-    }
-
-    .screening-header {
-        background-color: #f8f9fa;
-        padding: 15px 20px;
-        margin-bottom: 2px;
-        cursor: pointer;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .screening-header h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 500;
-        color: #212529;
-    }
-
-    .screening-content {
-        padding: 20px;
-        border: 1px solid #dee2e6;
-        border-top: none;
-        border-radius: 0 0 4px 4px;
-        margin-bottom: 10px;
-    }
-
-    .toggle-icon {
-        font-size: 12px;
-        color: #6c757d;
-    }
-
-    .btn-success {
-        padding: 8px 20px;
-        font-weight: 500;
-    }
-
-    /* Additional styles to match the image */
-    .accordion {
-        box-shadow: none;
-    }
-
-    .screening-header:hover {
-        background-color: #e9ecef;
-    }
-
-    .screening-content {
-        background-color: #fff;
-    }
-</style>
 {% endblock extracss %}
 
 {% block content %}
@@ -125,7 +68,7 @@
                             </div>
 
                             <!-- GAPSMA Section -->
-                            <div class="screening-section">
+                            <div class="screening-section active">
                                 <div class="screening-header">
                                     <h3>GAPSMA</h3>
                                     <span class="toggle-icon">▼</span>
@@ -185,7 +128,7 @@
                             </div>
 
                             <!-- FDGPETCT Section -->
-                            <div class="screening-section">
+                            <div class="screening-section active">
                                 <div class="screening-header">
                                     <h3>FDGPETCT</h3>
                                     <span class="toggle-icon">▼</span>
@@ -244,7 +187,7 @@
                             </div>
 
                             <!-- Assessment and Plan Section -->
-                            <div class="screening-section">
+                            <div class="screening-section active">
                                 <div class="screening-header">
                                     <h3>Assessment and Plan</h3>
                                     <span class="toggle-icon">▼</span>
@@ -264,57 +207,8 @@
     </div>
 </div>
 
-<script>
-    function toggleSection(sectionId) {
-        const content = document.getElementById(sectionId);
-        const header = content.previousElementSibling;
-        const icon = header.querySelector('.toggle-icon');
-        
-        if (content.style.display === 'none' || !content.style.display) {
-            content.style.display = 'block';
-            icon.textContent = '▼';
-        } else {
-            content.style.display = 'none';
-            icon.textContent = '▶';
-        }
-    }
-
-    function toggleLesionFields(organType, scanType) {
-        const status = document.getElementById(`id_${scanType}_${organType}_lesion_status`).value;
-        const fields = ['location', 'suv', 'size'];
-        
-        fields.forEach(field => {
-            const element = document.getElementById(`id_${scanType}_${organType}_${field}`);
-            const parentDiv = element.closest('div');
-            if (status === 'Absent') {
-                element.value = '';
-                element.disabled = true;
-                parentDiv.style.opacity = '0.5';
-            } else {
-                element.disabled = false;
-                parentDiv.style.opacity = '1';
-            }
-        });
-    }
-
-    // Add event listeners for all lesion status fields
-    const organs = ['prostate', 'lymph_node', 'bone', 'brain', 'lung', 'liver'];
-    const scanTypes = ['gapsma', 'fdgpetct'];
-
-    organs.forEach(organ => {
-        scanTypes.forEach(scanType => {
-            const statusField = document.getElementById(`id_${scanType}_${organ}_lesion_status`);
-            if (statusField) {
-                statusField.addEventListener('change', () => toggleLesionFields(organ, scanType));
-                // Initialize fields on page load
-                toggleLesionFields(organ, scanType);
-            }
-        });
-    });
-</script>
-
 {% endblock content %}
 
-{% block extrajs %}
+{% block extrascripts %}
 <script src="{% static 'js/screening.js' %}"></script>
-{% endblock extrajs %}
+{% endblock extrascripts %}

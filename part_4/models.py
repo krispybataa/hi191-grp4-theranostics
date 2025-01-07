@@ -1,5 +1,6 @@
 from django.db import models
 from part_1.models import Patient
+from django.core.validators import MaxValueValidator
 
 class FollowUp(models.Model):
     date_of_follow_up = models.DateField()
@@ -17,7 +18,11 @@ class FollowUp(models.Model):
     rbc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     hemoglobin = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     hematocrit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    platelet = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    platelet = models.PositiveIntegerField(
+        validators=[MaxValueValidator(999999)],
+        blank=True,
+        null=True,
+    )
     lactate_hydrogenase = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     alkaline_phosphatase = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     sgpt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
