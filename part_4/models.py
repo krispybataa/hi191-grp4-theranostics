@@ -1,6 +1,11 @@
 from django.db import models
 from part_1.models import Patient
 from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
+
+def validate_positive(value):
+    if value <= 0:
+        raise ValidationError('Value must be positive')
 
 class FollowUp(models.Model):
     date_of_follow_up = models.DateField()
@@ -12,12 +17,12 @@ class FollowUp(models.Model):
     id = models.AutoField(primary_key=True)
     slug = models.SlugField(null=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='fu_patient')
-    psa = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    creatinine = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    wbc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    rbc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    hemoglobin = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    hematocrit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    psa = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    creatinine = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    wbc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    rbc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    hemoglobin = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
+    hematocrit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, validators=[validate_positive])
     platelet = models.PositiveIntegerField(
         validators=[MaxValueValidator(999999)],
         blank=True,
