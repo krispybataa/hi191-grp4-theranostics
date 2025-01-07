@@ -87,28 +87,29 @@ def patientList(request):
     if side_effects == 'on':
         patients = patients.filter(t_patient__side_effects__isnull=False)
 
-    # Build screening lesion filters
-    lesion_filters = Q()
+    # Screening Filters
+    screening_filters = Q()
+
     if prostateLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_prostate_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_prostate_lesion_status='Present'))
+        screening_filters |= Q(screening_patient__gapsma_prostate_lesion_status='Present') | Q(screening_patient__fdgpetct_prostate_lesion_status='Present')
+
     if nodeLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_lymph_node_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_lymph_node_lesion_status='Present'))
+        screening_filters |= Q(screening_patient__gapsma_lymph_node_lesion_status='Present') | Q(screening_patient__fdgpetct_lymph_node_lesion_status='Present')
+
     if boneLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_bone_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_bone_lesion_status='Present'))
+        screening_filters |= Q(screening_patient__gapsma_bone_lesion_status='Present') | Q(screening_patient__fdgpetct_bone_lesion_status='Present')
+
     if brainLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_brain_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_brain_lesion_status='Present'))
+        screening_filters |= Q(screening_patient__gapsma_brain_lesion_status='Present') | Q(screening_patient__fdgpetct_brain_lesion_status='Present')
+
     if lungLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_lung_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_lung_lesion_status='Present'))
+        screening_filters |= Q(screening_patient__gapsma_lung_lesion_status='Present') | Q(screening_patient__fdgpetct_lung_lesion_status='Present')
+
     if liverLS == 'on':
-        lesion_filters |= (Q(screening_patient__gapsma_liver_lesion_status='Present') | 
-                          Q(screening_patient__fdgpetct_liver_lesion_status='Present'))
-    if lesion_filters:
-        patients = patients.filter(lesion_filters)
+        screening_filters |= Q(screening_patient__gapsma_liver_lesion_status='Present') | Q(screening_patient__fdgpetct_liver_lesion_status='Present')
+
+    if screening_filters:
+        patients = patients.filter(screening_filters)
 
     # Post-therapy filters
     if prostateLPT == 'on':
